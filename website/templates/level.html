@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}
+level
+{% endblock %}
+
+{% block content %}
+
+<style>
+  /* ใช้ฟอนต์ที่ดูทันสมัย */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* ปรับ container ให้ดูโปร่งใสแนว Glassmorphism */
+.container {
+    max-width: 900px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    margin: 30px auto;
+    text-align: center;
+}
+
+/* Heading */
+h1 {
+    font-weight: 600;
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #0056b3;
+}
+
+/* เส้นแบ่ง */
+hr {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Card Layout */
+.card-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Card Style */
+.card {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    max-width: 220px;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Header */
+.card-header {
+    font-weight: 600;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    color: white;
+}
+
+/* Image */
+.card-img-top {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Card Body */
+.card-body {
+    padding: 15px;
+}
+
+/* Card Title */
+.card-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #0056b3;
+}
+
+/* Card Subtitle */
+.card-subtitle {
+    font-size: 14px;
+    color: #333; /* เปลี่ยนจาก #f0f0f0 เป็นสีเข้มขึ้น */
+    opacity: 0.9; /* เพิ่มความทึบ */
+}
+
+
+
+.minimum {
+    background: #d4edda; 
+    color: #155724;
+}
+.moderate {
+    background: #ffcc80;  /* โทนส้มอ่อน */
+    color: #8a4b00;
+}
+.mild {
+    background: #ffe082;  /* โทนเหลืองส้ม */
+    color: #7a4c00;
+}
+.severe {
+    background: #f8d7da; 
+    color: #721c24;
+}
+
+
+
+/* Button */
+.btn {
+    display: inline-block;
+    background: linear-gradient(45deg, #007bff, #00c6ff);
+    color: white;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 25px;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn:hover {
+    background: linear-gradient(45deg, #0056b3, #0094ff);
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card-group {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 90%;
+    }
+}
+
+</style>
+<!-- Heading -->
+<br>
+<h1> Depression level </h1>
+<hr>
+
+<!-- Card group -->
+<div class="container" style="margin-top: 20px;">
+  <div class="card-group bg-light-blue">
+
+    <div class="card minimum">
+      <div class="card-header">Depression Level</div>
+      <img src="../static/images/minimum.png" class="card-img-top" width="50" height="250">
+      <div class="card-body">
+        <h4 class="card-title">Minimum</h4>
+        <h6 class="card-subtitle mb-2">You are mentally well. Keep maintaining a healthy lifestyle!</h6>
+        <a href="/tips" class="btn btn-primary">Learn More</a>
+      </div>
+    </div>
+
+    <div class="card mild">
+      <div class="card-header">Depression Level</div>
+      <img src="../static/images/mild.png" class="card-img-top" width="50" height="250">
+      <div class="card-body">
+        <h4 class="card-title">Mild</h4>
+        <h6 class="card-subtitle mb-2">You may be experiencing mild stress. Consider relaxation techniques.</h6>
+        <a href="/stress-relief" class="btn btn-primary">Find Solutions</a>
+      </div>
+    </div>
+    
+    <div class="card moderate">
+      <div class="card-header">Depression Level</div>
+      <img src="../static/images/moderate.png" class="card-img-top" width="50" height="250">
+      <div class="card-body">
+        <h4 class="card-title">Moderate</h4>
+        <h6 class="card-subtitle mb-2">Symptoms of depression are emerging. Seeking help may be beneficial.</h6>
+        <a href="/self-help" class="btn btn-primary">Get Support</a>
+      </div>
+    </div>
+    
+    <div class="card severe">
+      <div class="card-header">Depression Level</div>
+      <img src="../static/images/severe.png" class="card-img-top" width="50" height="250">
+      <div class="card-body">
+        <h4 class="card-title">Severe</h4>
+        <h6 class="card-subtitle mb-2">You may be facing serious depression. Professional help is recommended.</h6>
+        <a href="/therapy" class="btn btn-danger">Seek Help</a>
+      </div>
+    </div>
+    
+  </div>
+</div>
+{% endblock %}

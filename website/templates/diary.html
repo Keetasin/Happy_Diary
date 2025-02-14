@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block title %}Diary{% endblock %}
+
+{% block content %}
+<style>
+/* CSS for body background */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Container styling */
+#container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(8px);
+    text-align: center;
+}
+
+/* Title styling */
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #0056b3;
+    margin-bottom: 20px;
+}
+
+/* Form styling */
+.diary-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Form group */
+.form-group {
+    width: 100%;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+/* Input fields */
+.form-input, .form-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.8);
+    color: #0056b3;
+}
+
+/* Textarea specific */
+.form-textarea {
+    height: 120px;
+    resize: none;
+}
+
+/* Save button */
+.btn-save {
+    background: linear-gradient(45deg, #007bff, #00c6ff);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-save:hover {
+    background: linear-gradient(45deg, #0056b3, #0094ff);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Diary Entry */
+.diary-entry {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.diary-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #0056b3;
+}
+
+.diary-date {
+    font-size: 14px;
+    color: #007bff;
+    margin-bottom: 5px;
+}
+
+.diary-content {
+    font-size: 16px;
+    color: #333;
+}
+
+
+/* level Box - Default Styling */
+.level-box {
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 18px;
+    transition: all 0.3s ease-in-out;
+}
+
+
+.level-box strong a {
+    color: inherit;  
+    text-decoration: none; 
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.level-box strong a:hover {
+    color: rgba(0, 0, 0, 0.8);  
+}
+
+
+/* Minimum - Green */
+.level-minimum {
+    background: #d4edda;
+    color: #155724;
+    border-left: 5px solid #155724;
+}
+
+/* Mild - Yellow */
+.level-mild {
+    background: #fff3cd;
+    color: #856404;
+    border-left: 5px solid #856404;
+}
+
+/* Moderate - Orange */
+.level-moderate {
+    background: #ffcc80;
+    color: #a55b00;
+    border-left: 5px solid #a55b00;
+}
+
+/* Severe - Red */
+.level-severe {
+    background: #f8d7da;
+    color: #721c24;
+    border-left: 5px solid #721c24;
+}
+
+
+/* Emojis */
+.level-emoji {
+    font-size: 24px;
+    margin-right: 5px;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.level-box {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+
+
+</style>
+
+<div id="container">
+    <h2 class="diary-date">📅 Today: {{ today.strftime('%B %d, %Y') }}</h2>
+
+    <h1 class="title">📖 My Diary</h1>
+    <form method="POST" class="diary-form">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            <label for="title">📝 Title</label>
+            {{ form.title(class="form-input") }}
+        </div>
+
+        <div class="form-group">
+            <label for="content">📜 Content</label>
+            {{ form.content(class="form-textarea") }}
+        </div>
+
+        <button type="submit" class="btn-save">Save</button>
+    </form>
+
+    {% if predicted_level %}
+        {% if predicted_level == "minimum" %}
+            <div class="level-box level-minimum">
+                <span class="level-emoji">😊</span> Depression level: <strong><a href="/tips">Minimum</a></strong>
+            </div>
+        {% elif predicted_level == "mild" %}
+            <div class="level-box level-mild">
+                <span class="level-emoji">😐</span> Depression level: <strong><a href="/stress-relief">Mild</a></strong>
+            </div>
+        {% elif predicted_level == "moderate" %}
+            <div class="level-box level-moderate">
+                <span class="level-emoji">😕</span> Depression level: <strong><a href="/self-help">Moderate</a></strong>
+            </div>
+        {% elif predicted_level == "severe" %}
+            <div class="level-box level-severe">
+                <span class="level-emoji">😢</span> Depression level: <strong><a href="/therapy">Severe</a></strong>
+            </div>
+        {% endif %}
+    {% endif %}
+
+</div>
+
+
+
+{% endblock %}

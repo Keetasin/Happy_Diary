@@ -1,0 +1,7 @@
+/* CSS for container */
+#container {
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+    padding: 30px; /* Add padding inside the container */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Shadow effect */
+}

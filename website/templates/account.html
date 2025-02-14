@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+
+{% block title %}
+Account
+{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+    
+    /* Container */
+    #container {
+        max-width: 700px;
+        margin: 50px auto;
+        background: rgba(255, 255, 255, 0.7);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        text-align: center;
+    }
+    
+    /* Profile Card */
+    .profile-card {
+        background: linear-gradient(135deg, #0056b3, #0094ff);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* User Info */
+    .user-info {
+        font-size: 18px;
+    }
+    
+    /* Diary Entries */
+    .entry-card {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 15px;
+        text-align: left;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative; /* ทำให้ปุ่มลบอยู่ภายใน */
+        padding-bottom: 50px; /* เว้นที่ให้ปุ่มด้านล่าง */
+    }
+    
+    .entry-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Entry Title */
+    .entry-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #0056b3;
+    }
+    
+    /* Entry Date */
+    .entry-date {
+        font-size: 14px;
+        color: #007bff;
+        margin-bottom: 5px;
+    }
+    
+    /* Entry Content */
+    .entry-content {
+        font-size: 16px;
+        color: #333;
+    }
+    
+    /* Logout Button */
+    .logout-btn {
+        display: block;
+        margin-top: 20px;
+        padding: 12px 20px;
+        background: linear-gradient(45deg, #dc3545, #ff6b6b);
+        color: white;
+        text-decoration: none;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .logout-btn:hover {
+        background: linear-gradient(45deg, #c82333, #ff3b3b);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .delete-btn {
+        background: linear-gradient(45deg, #ff3b3b, #c82333);
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-left: 10px;
+        position: absolute;
+        right: 15px; /* เว้นขอบขวา 15px */
+        bottom: 10px; /* เว้นขอบล่าง 10px */
+    }
+    
+    .delete-btn:hover {
+        background: linear-gradient(45deg, #c82333, #a71d2a);
+        transform: translateY(-2px);
+    }
+
+    .chart-container {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    /* Depression Level Styles */
+    .depression-level {
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        display: inline-block;
+    }
+
+    .depression-level strong a {
+        color: inherit;  
+        text-decoration: none; 
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .depression-level strong a:hover {
+        color: rgba(0, 0, 0, 0.8);  
+    }
+
+    .level-minimum {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .level-mild {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .level-moderate {
+        background: #ffcc80;
+        color: #a55b00;
+    }
+
+    .level-severe {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .level-unknown {
+        background: #e2e3e5;
+        color: #6c757d;
+    }
+
+    
+    </style>
+
+    <div id="container">
+    <!-- Profile Section -->
+    <div class="profile-card">
+        <h2>👤 Account</h2>
+        <p class="user-info">📧 Email: {{ email }}</p>
+        <p class="user-info">📝 Name: {{ first_name }}</p>
+    </div>    
+    
+
+    <div class="chart-container">
+        <h2>Depression Level Trend</h2>
+        <canvas id="depressionChart"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const diaryEntries = {{ diary_entries_serializable | tojson }};
+    
+            const levelMapping = {
+                "minimum": 1,
+                "mild": 2,
+                "moderate": 3,
+                "severe": 4
+            };
+    
+            const colorMapping = {
+                "minimum": "#28a745",  // Green
+                "mild": "#ffc107",     // Yellow
+                "moderate": "#fd7e14", // Orange
+                "severe": "#dc3545"    // Red
+            };
+    
+            const labels = diaryEntries.map(entry => entry.date);
+            const data = diaryEntries.map(entry => levelMapping[entry.level] || 0);
+            const pointColors = diaryEntries.map(entry => colorMapping[entry.level] || "#6c757d"); // Default Gray
+    
+            const ctx = document.getElementById("depressionChart").getContext("2d");
+            new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        borderColor: "#36a2eb",
+                        backgroundColor: "rgba(54, 162, 235, 0.2)",
+                        borderDash: [3, 3], 
+                        borderWidth: 2,
+                        tension: 0.3,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        pointBackgroundColor: pointColors, 
+                        pointBorderColor: "#fff",
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false 
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    const levelLabels = ["", "Minimum", "Mild", "Moderate", "Severe"];
+                                    let value = tooltipItem.raw;
+                                    return `Level: ${levelLabels[value]}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 4,
+                            ticks: {
+                                stepSize: 1,
+                                callback: function (value) {
+                                    return ["", "Minimum", "Mild", "Moderate", "Severe"][value];
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: "Depression Level"
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Date"
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+
+    
+
+    <!-- Diary Entries -->
+    <h2>Diary Entries</h2>
+
+    {% if diary_entries %}
+        {% for entry in diary_entries %}
+            <div class="entry-card">
+                <div class="entry-title">{{ entry.title }}</div>
+                <div class="entry-date">📅 {{ entry.date.strftime('%B %d, %Y') }}</div>
+                
+                <!-- level Indicator -->
+                {% if entry.level == "minimum" %}
+                <small class="depression-level level-minimum">
+                    😊 Depression level: <strong><a href="/tips">Minimum</a></strong>
+                </small>
+                {% elif entry.level == "mild" %}
+                <small class="depression-level level-mild">
+                    😐 Depression level: <strong><a href="/stress-relief">Mild</a></strong>
+                </small>
+                {% elif entry.level == "moderate" %}
+                <small class="depression-level level-moderate">
+                    😕 Depression level: <strong><a href="/self-help">Moderate</a></strong>
+                </small>
+                {% elif entry.level == "severe" %}
+                <small class="depression-level level-severe">
+                    😢 Depression level: <strong><a href="/therapy">Severe</a></strong>
+                </small>
+                {% else %}
+                <small class="depression-level level-unknown">
+                    ❓ Depression level: <strong>Not Available</strong>
+                </small>
+                {% endif %}                
+
+                <div class="entry-content">{{ entry.content }}</div>
+
+                <form action="{{ url_for('views.delete_diary', diary_id=entry.id) }}" method="POST">
+                    <button type="submit" class="delete-btn">🗑️ Delete</button>
+                </form>         
+
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No diary entries yet.</p>
+    {% endif %}
+
+    <!-- Logout Button -->
+    <a href="/logout" class="logout-btn">🚪 Logout</a>
+</div>
+{% endblock %}
