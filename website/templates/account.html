@@ -194,7 +194,8 @@ Account
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const diaryEntries = {{ diary_entries_serializable | tojson }};
+            let diaryEntries = {{ diary_entries_serializable | tojson }};
+            diaryEntries.reverse(); 
     
             const levelMapping = {
                 "minimum": 1,
