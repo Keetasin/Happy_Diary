@@ -80,8 +80,8 @@ def delete_diary(diary_id):
 
 
 # โหลดโมเดลและ Tokenizer
-MODEL_PATH = 'model.h5'
-TOKENIZER_PATH = 'tokenizer.pkl'
+MODEL_PATH = 'model/depression/model.h5'
+TOKENIZER_PATH = 'model/depression/tokenizer.pkl'
 
 model = tf.keras.models.load_model(MODEL_PATH)
 
