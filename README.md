@@ -1,6 +1,20 @@
 # 241-202 MACHINE LEARNING II - 2/67
 
-## Mini Project
+## Mini Project: Depression Level Analysis from Diary Entries
+
+### 📖 Project Overview
+This project is a **web-based diary application** that analyzes users' diary entries to assess their **depression levels**.  
+The system classifies depression into four stages:
+
+- **Minimum** 😊  
+- **Mild** 😐  
+- **Moderate** 😕  
+- **Severe** 😢  
+
+Additionally, the system provides **personalized recommendations** to support mental well-being.
+
+
+---
 
 ### 📌 Setup & Installation
 Ensure that you have Python installed on your system before proceeding.
