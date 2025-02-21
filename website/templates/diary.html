@@ -93,12 +93,6 @@ body {
     text-align: left;
 }
 
-.diary-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #0056b3;
-}
-
 .diary-date {
     font-size: 14px;
     color: #007bff;
@@ -188,6 +182,72 @@ body {
     animation: fadeIn 0.5s ease-in-out;
 }
 
+/* File input styling */
+.file-input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #0056b3;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.file-input:hover {
+    border-color: #0056b3;
+    background: rgba(255, 255, 255, 1);
+}
+
+/* Diary Entry Styling */
+.diary-entry {
+    background: rgba(255, 255, 255, 0.85);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    margin-top: 25px;
+    text-align: left;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+
+.diary-entry h4 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #0056b3;
+    margin-bottom: 8px;
+}
+
+.diary-entry p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+/* Image Styling */
+.image-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.image-container img {
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease-in-out;
+}
+
+.image-container img:hover {
+    transform: scale(1.05);
+}
+
+.caption-text {
+    font-size: 14px;
+    color: #555;
+    font-style: italic;
+    margin-top: 8px;
+}
 
 
 </style>
@@ -196,7 +256,7 @@ body {
     <h2 class="diary-date">📅 Today: {{ today.strftime('%B %d, %Y') }}</h2>
 
     <h1 class="title">📖 My Diary</h1>
-    <form method="POST" class="diary-form">
+    <form method="POST" enctype="multipart/form-data" class="diary-form">
         {{ form.hidden_tag() }}
 
         <div class="form-group">
@@ -209,28 +269,55 @@ body {
             {{ form.content(class="form-textarea") }}
         </div>
 
+        <div class="form-group">
+            <label for="image">📷 Upload Image</label>
+            {{ form.image(class="form-input file-input") }}
+        </div>        
+
         <button type="submit" class="btn-save">Save</button>
     </form>
 
-    {% if predicted_level %}
-        {% if predicted_level == "minimum" %}
-            <div class="level-box level-minimum">
-                <span class="level-emoji">😊</span> Depression level: <strong><a href="/tips">Minimum</a></strong>
+    {% if latest_diary %}
+    
+        <div class="content-section">
+            {% if latest_diary.level %}
+                <div class="level-box">
+                    {% if latest_diary.level == "minimum" %}
+                        <div class="level-box level-minimum">
+                            <span class="level-emoji">😊</span> Depression level: <strong><a href="/tips">Minimum</a></strong>
+                        </div>
+                    {% elif latest_diary.level == "mild" %}
+                        <div class="level-box level-mild">
+                            <span class="level-emoji">😐</span> Depression level: <strong><a href="/stress-relief">Mild</a></strong>
+                        </div>
+                    {% elif latest_diary.level == "moderate" %}
+                        <div class="level-box level-moderate">
+                            <span class="level-emoji">😕</span> Depression level: <strong><a href="/self-help">Moderate</a></strong>
+                        </div>
+                    {% elif latest_diary.level == "severe" %}
+                        <div class="level-box level-severe">
+                            <span class="level-emoji">😢</span> Depression level: <strong><a href="/therapy">Severe</a></strong>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="diary-entry">
+                <h4>{{ latest_diary.title }}</h4>
+                <p class="diary-content">{{ latest_diary.content }}</p>
+            
+                {% if latest_diary.image_filename %}
+                    <div class="image-container">
+                        <img src="{{ url_for('static', filename='uploads/' + latest_diary.image_filename) }}" 
+                            alt="Uploaded Image">
+                        <p class="caption-text"><strong>🖼 Caption:</strong> {{ latest_diary.image_caption }}</p>
+                    </div>
+                {% endif %}
             </div>
-        {% elif predicted_level == "mild" %}
-            <div class="level-box level-mild">
-                <span class="level-emoji">😐</span> Depression level: <strong><a href="/stress-relief">Mild</a></strong>
-            </div>
-        {% elif predicted_level == "moderate" %}
-            <div class="level-box level-moderate">
-                <span class="level-emoji">😕</span> Depression level: <strong><a href="/self-help">Moderate</a></strong>
-            </div>
-        {% elif predicted_level == "severe" %}
-            <div class="level-box level-severe">
-                <span class="level-emoji">😢</span> Depression level: <strong><a href="/therapy">Severe</a></strong>
-            </div>
-        {% endif %}
+            
+        </div>
     {% endif %}
+
 
 </div>
 

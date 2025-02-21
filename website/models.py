@@ -9,6 +9,8 @@ class Diary(db.Model):
     content = db.Column(db.Text, nullable=False)
     date = db.Column(db.Date, default=datetime.utcnow)
     level = db.Column(db.String(50), nullable=False)
+    image_filename = db.Column(db.String(255), nullable=True)  
+    image_caption = db.Column(db.Text, nullable=True)  
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def to_dict(self):
@@ -17,7 +19,9 @@ class Diary(db.Model):
             "title": self.title,
             "content": self.content,
             "date": self.date.strftime("%Y-%m-%d"),
-            "level": self.level
+            "level": self.level,
+            "image_filename": self.image_filename,
+            "image_caption": self.image_caption
         }
 
 

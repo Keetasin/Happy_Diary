@@ -173,6 +173,30 @@ Account
         color: #6c757d;
     }
 
+    .image-container {
+        text-align: center;
+        margin-top: 15px;
+    }
+    
+    .image-container img {
+        max-width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .image-container img:hover {
+        transform: scale(1.05);
+    }
+    
+    .caption-text {
+        font-size: 14px;
+        color: #555;
+        font-style: italic;
+        margin-top: 15px;
+        justify-content: center;
+    }
+
     
     </style>
 
@@ -312,6 +336,15 @@ Account
                 {% endif %}                
 
                 <div class="entry-content">{{ entry.content }}</div>
+                {% if entry.image_filename %}
+                    <div class="image-container">
+                        <img src="{{ url_for('static', filename='uploads/' + entry.image_filename) }}" alt="Uploaded Image" style="max-width: 100%; height: auto;">
+                    </div>
+                    {% if entry.image_caption %}
+                        <p class="caption-text"><strong>🖼 Caption:</strong> {{ entry.image_caption }}</p>
+                    {% endif %}
+                {% endif %}
+
 
                 <form action="{{ url_for('views.delete_diary', diary_id=entry.id) }}" method="POST">
                     <button type="submit" class="delete-btn">🗑️ Delete</button>

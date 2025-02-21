@@ -2,6 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
+import os
+
 
 # Initialize SQLAlchemy database instance
 db = SQLAlchemy()
@@ -17,6 +19,7 @@ def create_app():
     # Configure Flask app settings
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['UPLOAD_FOLDER'] = 'website/static/uploads'
     
     # Initialize SQLAlchemy with the Flask app
     db.init_app(app)
