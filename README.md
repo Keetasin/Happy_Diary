@@ -27,6 +27,18 @@ Additionally, the system provides **personalized recommendations** to support me
 
 ---
 
+### 🧠 Deep Learning Models
+
+- Depression Level Prediction Model
+   -  Uses **LSTM** to analyze diary text  
+   - Loaded from: model/depression/model.h5  
+
+- Image Captioning Model
+   - Uses **VGG16** and **LSTM**  
+   - Loaded from: model/image_caption/mymodel.keras
+
+---
+
 ### 📌 Setup & Installation
 Ensure that you have Python installed on your system before proceeding.
 
