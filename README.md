@@ -3,7 +3,7 @@
 ## Mini Project: Depression Level Analysis from Diary Entries
 
 ### 📖 Project Overview
-This project is a **web-based diary application** that analyzes users' diary entries to assess their **depression levels**.  
+This project is a **web-based diary application** designed to generate **image captions** and analyze them alongside diary entries to assess **depression levels**.  
 The system classifies depression into four stages:
 
 - **Minimum** 😊  
@@ -11,8 +11,7 @@ The system classifies depression into four stages:
 - **Moderate** 😕  
 - **Severe** 😢  
 
-Additionally, the system provides **personalized recommendations** to support mental well-being.
-
+Additionally, the system provides **recommendations based on depression levels** to support users' mental well-being.
 
 ---
 
