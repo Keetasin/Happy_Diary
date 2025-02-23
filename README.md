@@ -45,20 +45,3 @@ Ensure that you have Python installed on your system before proceeding.
    ```
    http://127.0.0.1:5000
    ```
-
----
-
-### 🔧 Troubleshooting
-- If you encounter issues with dependencies, try upgrading `pip` before installation:
-  ```bash
-  pip install --upgrade pip
-  ```
-- If the application does not start, check for missing dependencies:
-  ```bash
-  pip list
-  ```
-
----
-
-### 📜 License
-This project is for educational purposes under the course **241-202 Machine Learning II**.
