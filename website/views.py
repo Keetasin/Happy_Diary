@@ -60,6 +60,11 @@ def delete_diary(diary_id):
     if diary.user_id != current_user.id:
         flash('You do not have permission to delete this entry.', category='error')
         return redirect(url_for('views.account'))
+    
+    if diary.image_filename:
+        image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], diary.image_filename)
+        if os.path.exists(image_path):  
+            os.remove(image_path)  
 
     db.session.delete(diary)
     db.session.commit()
