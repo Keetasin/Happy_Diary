@@ -16,6 +16,17 @@ Additionally, the system provides **personalized recommendations** to support me
 
 ---
 
+### 🔧 Features  
+- **User Authentication** – login and registration system  
+- **Image Captioning** – Automatically generate captions for uploaded images  
+- **Depression Level Prediction** – Analyze depression levels from images and diary text  
+- **Personalized Recommendations** – Provide suggestions based on depression levels  
+- **Diary Management** – Add, delete, and manage diary entries with images  
+- **User Dashboard** – Track and analyze depression trends over time
+
+
+---
+
 ### 📌 Setup & Installation
 Ensure that you have Python installed on your system before proceeding.
 
