@@ -4,7 +4,7 @@
 /* CSS for body */
 body {
     height: 100%;
-    min-height: 100vh; /* ทำให้พื้นหลังเต็มตลอด */
+    min-height: 100vh; 
     background: linear-gradient(rgba(0, 123, 255, 0.7), rgba(255, 255, 255, 0.8)), 
                 url('../images/page.jpg') no-repeat center center fixed;
     background-size: cover;

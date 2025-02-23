@@ -13,7 +13,6 @@ Account
         color: #333;
     }
     
-    /* Container */
     #container {
         max-width: 700px;
         margin: 50px auto;
@@ -24,8 +23,7 @@ Account
         backdrop-filter: blur(10px);
         text-align: center;
     }
-    
-    /* Profile Card */
+
     .profile-card {
         background: linear-gradient(135deg, #0056b3, #0094ff);
         color: white;
@@ -35,12 +33,10 @@ Account
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     }
     
-    /* User Info */
     .user-info {
         font-size: 18px;
     }
     
-    /* Diary Entries */
     .entry-card {
         background: rgba(255, 255, 255, 0.9);
         padding: 15px;
@@ -49,8 +45,8 @@ Account
         margin-bottom: 15px;
         text-align: left;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-        position: relative; /* ทำให้ปุ่มลบอยู่ภายใน */
-        padding-bottom: 50px; /* เว้นที่ให้ปุ่มด้านล่าง */
+        position: relative; 
+        padding-bottom: 50px; 
     }
     
     .entry-card:hover {
@@ -58,27 +54,23 @@ Account
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
     
-    /* Entry Title */
     .entry-title {
         font-size: 20px;
         font-weight: bold;
         color: #0056b3;
     }
     
-    /* Entry Date */
     .entry-date {
         font-size: 14px;
         color: #007bff;
         margin-bottom: 5px;
     }
     
-    /* Entry Content */
     .entry-content {
         font-size: 16px;
         color: #333;
     }
     
-    /* Logout Button */
     .logout-btn {
         display: block;
         margin-top: 20px;
@@ -111,8 +103,8 @@ Account
         transition: all 0.3s ease;
         margin-left: 10px;
         position: absolute;
-        right: 15px; /* เว้นขอบขวา 15px */
-        bottom: 10px; /* เว้นขอบล่าง 10px */
+        right: 15px; 
+        bottom: 10px; 
     }
     
     .delete-btn:hover {
@@ -128,7 +120,6 @@ Account
         margin-bottom: 20px;
     }
 
-    /* Depression Level Styles */
     .depression-level {
         padding: 5px 10px;
         border-radius: 5px;
@@ -202,7 +193,7 @@ Account
     </style>
 
     <div id="container">
-    <!-- Profile Section -->
+
     <div class="profile-card">
         <h2>👤 Account</h2>
         <p class="user-info">📧 Email: {{ email }}</p>
@@ -230,15 +221,15 @@ Account
             };
     
             const colorMapping = {
-                "minimum": "#28a745",  // Green
-                "mild": "#ffc107",     // Yellow
-                "moderate": "#fd7e14", // Orange
-                "severe": "#dc3545"    // Red
+                "minimum": "#28a745",  
+                "mild": "#ffc107",     
+                "moderate": "#fd7e14", 
+                "severe": "#dc3545"    
             };
     
             const labels = diaryEntries.map(entry => entry.date);
             const data = diaryEntries.map(entry => levelMapping[entry.level] || 0);
-            const pointColors = diaryEntries.map(entry => colorMapping[entry.level] || "#6c757d"); // Default Gray
+            const pointColors = diaryEntries.map(entry => colorMapping[entry.level] || "#6c757d"); 
     
             const ctx = document.getElementById("depressionChart").getContext("2d");
             new Chart(ctx, {
@@ -304,7 +295,6 @@ Account
 
     
 
-    <!-- Diary Entries -->
     <h2>Diary Entries</h2>
 
     {% if diary_entries %}
@@ -313,7 +303,6 @@ Account
                 <div class="entry-title">{{ entry.title }}</div>
                 <div class="entry-date">📅 {{ entry.date.strftime('%B %d, %Y') }}</div>
                 
-                <!-- level Indicator -->
                 {% if entry.level == "minimum" %}
                 <small class="depression-level level-minimum">
                     😊 Depression level: <strong><a href="/tips">Minimum</a></strong>
@@ -357,7 +346,6 @@ Account
         <p>No diary entries yet.</p>
     {% endif %}
 
-    <!-- Logout Button -->
     <a href="/logout" class="logout-btn">🚪 Logout</a>
 </div>
 {% endblock %}

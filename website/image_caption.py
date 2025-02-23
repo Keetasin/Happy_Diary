@@ -1,9 +1,9 @@
-import numpy as np
-import pickle
 from tensorflow.keras.models import load_model, Model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.applications.vgg16 import VGG16, preprocess_input
 from tensorflow.keras.preprocessing import image
+import numpy as np
+import pickle
 
 def load_model_and_tokenizer(model_path, tokenizer_path):
     model = load_model(model_path)

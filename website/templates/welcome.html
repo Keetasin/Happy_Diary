@@ -1,48 +1,40 @@
 {% extends "base.html" %}
 
-<!-- Set the title of the page -->
 {% block title %}
     Happy Diary
 {% endblock %}
 
 {% block content %}
-<!-- Include external CSS stylesheet -->
 <link rel="stylesheet" type="text/css" href="../static/style/welcome.css">
-    <!-- Add vertical space for better alignment -->
     <br><br><br><br><br>
-    <!-- Check if the user is authenticated -->
+
     {% if user.is_authenticated %}
-    <!-- Display personalized greeting for authenticated users -->
-    <h1>Hello {{user.first_name}}</h1>
-    <h2>Welcome To Happy Diary</h2>
-    <br><br>
-    <!-- Provide information about the application's services -->
-    <!-- <p>Empower your health journey with Happy Healthy.<br> We are dedicated to providing you with the necessary resources and tools <br>to support your well-being, enabling you to lead a healthier and more fulfilling life.<br> Our comprehensive services include a state-of-the-art Body Mass Index (BMI) calculator,<br> designed to assist you in monitoring and improving your physical health.<br> Take control of your health today and embark on a path to a happier and healthier you!</p> -->
-    <p>
-        This project is a web-based diary application designed to generate image captions and analyze them alongside diary entries to assess depression levels.<br>
-        The system classifies depression into four stages: <br> <strong>Minimum</strong>, <strong>Mild</strong>, <strong>Moderate</strong> and <strong>Severe</strong> <br>
-        Additionally, the system provides recommendations based on depression levels to support users' mental well-being.
-    </p>
-    
-    <br><br><br>
-    <!-- If user is authenticated, do not display login/signup buttons -->
+        <h1>Hello {{user.first_name}}</h1>
+        <h2>Welcome To Happy Diary</h2>
+        <br><br>
+
+        <p>
+            This project is a web-based diary application designed to generate image captions and analyze them alongside diary entries to assess depression levels.<br>
+            The system classifies depression into four stages: <br> <strong>Minimum</strong>, <strong>Mild</strong>, <strong>Moderate</strong> and <strong>Severe</strong> <br>
+            Additionally, the system provides recommendations based on depression levels to support users' mental well-being.
+        </p>
+        <br><br><br>
+
     {% else %}
-    <!-- Display welcome message and call-to-action buttons for unauthenticated users -->
-    <h1>Welcome To Happy Diary</h1>
-    <br><br>
-    <!-- <p>Empower your health journey with Happy Healthy.<br> We are dedicated to providing you with the necessary resources and tools <br>to support your well-being, enabling you to lead a healthier and more fulfilling life.<br> Our comprehensive services include a state-of-the-art Body Mass Index (BMI) calculator,<br> designed to assist you in monitoring and improving your physical health.<br> Take control of your health today and embark on a path to a happier and healthier you!</p> -->
-    <p>
-        This project is a web-based diary application designed to generate image captions and analyze them alongside diary entries to assess depression levels.<br>
-        The system classifies depression into four stages: <br> <strong>Minimum</strong>, <strong>Mild</strong>, <strong>Moderate</strong> and <strong>Severe</strong> <br> 
+        <h1>Welcome To Happy Diary</h1>
+        <br><br>
+        <p>
+            This project is a web-based diary application designed to generate image captions and analyze them alongside diary entries to assess depression levels.<br>
+            The system classifies depression into four stages: <br> <strong>Minimum</strong>, <strong>Mild</strong>, <strong>Moderate</strong> and <strong>Severe</strong> <br> 
 
-        Additionally, the system provides recommendations based on depression levels <br> to support users' mental well-being.
-    </p>
+            Additionally, the system provides recommendations based on depression levels <br> to support users' mental well-being.
+        </p>
 
-    <br><br><br>
-    <!-- Display login/signup buttons for unauthenticated users -->
-    <div class="btn-container">
-        <a href="/login" class="btn">Login</a>
-        <a href="/sign-up" class="btn">Sign Up</a>
-    </div>
+        <br><br><br>
+
+        <div class="btn-container">
+            <a href="/login" class="btn">Login</a>
+            <a href="/sign-up" class="btn">Sign Up</a>
+        </div>
     {% endif %}
 {% endblock %}
