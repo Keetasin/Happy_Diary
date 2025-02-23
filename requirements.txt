@@ -5,5 +5,5 @@ Flask-WTF
 Werkzeug
 tensorflow
 numpy
-pickle5
+pickle
 wtforms
