@@ -36,8 +36,8 @@ Additionally, the system provides **recommendations based on depression levels**
 - Image Captioning Model
    - Uses **VGG16** and **LSTM**  
    - **BLEU Scores**:  
-      - BLEU-1: **0.3724**  
-      - BLEU-2: **0.1559**  
+      - BLEU-1: **0.555093**  
+      - BLEU-2: **0.326121**  
    - Loaded from: model/image_caption/mymodel.keras
 
 ---
