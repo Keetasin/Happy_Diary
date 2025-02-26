@@ -30,7 +30,7 @@ Additionally, the system provides **recommendations based on depression levels**
 
 - Depression Level Prediction Model
    - Uses **LSTM** 
-   - **Accuracy**: 0.80  
+   - **Accuracy**: **0.80**  
    - Loaded from: model/depression/model.h5  
 
 - Image Captioning Model
