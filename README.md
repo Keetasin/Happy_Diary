@@ -28,12 +28,12 @@ Additionally, the system provides **recommendations based on depression levels**
 
 ### 🧠 Deep Learning Models
 
-- Depression Level Prediction Model
+- **Depression Level Prediction Model**
    - Uses **LSTM** 
    - **Accuracy**: **0.80**  
    - Loaded from: model/depression/model.h5  
 
-- Image Captioning Model
+- **Image Captioning Model**
    - Uses **VGG16** and **LSTM**  
    - **BLEU Scores**:  
       - BLEU-1: **0.555093**  
@@ -71,3 +71,10 @@ Ensure that you have Python installed on your system before proceeding.
    ```
    http://127.0.0.1:5000
    ```
+
+---
+
+### 🎥 Video Tutorial & Slides  
+
+- **YouTube Tutorial**: [YouTube Video](https://youtu.be/HWr2KuyTWa0)  
+- **Slide Presentation**: [Canva Slide](https://www.canva.com/design/DAGfuTmcGcg/43RbzjLbcj3-SgQO7Bx1WQ/edit?utm_content=DAGfuTmcGcg&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)  
