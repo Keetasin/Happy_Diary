@@ -36,7 +36,7 @@ This project includes external datasets and source code from third parties. **Us
 
 3. **Image Caption Generator Code**  
    - Source: [GitHub Repository](https://github.com/Sajid030/image-caption-generator)  
-   - Licensed under **MIT License** ([View License](https://github.com/Sajid030/image-caption-generator/blob/main/LICENSE))  
+   - Licensed under **MIT License** ([View License](https://github.com/Sajid030/image-caption-generator/blob/master/LICENSE.md))  
 
 #### ⚠ **Legal Disclaimer**
 - This software is provided **without warranty of any kind**, including but not limited to fitness for a particular purpose. The authors **shall not be liable** for any damage or legal issues arising from its use.
