@@ -22,17 +22,26 @@ SOFTWARE.
 
 ---
 
-### *Additional Notices*
-This project includes the following datasets and source codes:
+### *Additional Notices and Disclaimer*
 
-1. *Depression Severity Dataset* (Source: [GitHub Repository](https://github.com/usmaann/Depression_Severity_Dataset))  
-   - *Warning:* The license for this dataset is unclear. Please verify with the original source before use.  
+This project includes external datasets and source code from third parties. **Users are responsible for verifying and complying with the respective licenses before use.** The following components are included:
 
-2. *Flickr8k Dataset* (Source: [Kaggle](https://www.kaggle.com/datasets/adityajn105/flickr8k))  
-   - Licensed under *CC0: Public Domain*, meaning it is free to use.  
+1. **Depression Severity Dataset**  
+   - Source: [GitHub Repository](https://github.com/usmaann/Depression_Severity_Dataset)  
+   - *Warning:* The license for this dataset is unclear. Users must verify with the original source before use.  
 
-3. *Image Caption Generator Code* (Source: [GitHub Repository](https://github.com/Sajid030/image-caption-generator))  
-   - Licensed under *MIT License* ([View License](https://github.com/Sajid030/image-caption-generator/blob/main/LICENSE))  
+2. **Flickr8k Dataset**  
+   - Source: [Kaggle](https://www.kaggle.com/datasets/adityajn105/flickr8k)  
+   - Licensed under **CC0: Public Domain**, meaning it is free to use.  
 
-*Note:* While this software is licensed under the MIT License, the included datasets and external code may be subject to different licenses.  
-Users are responsible for verifying and complying with the respective licenses before use.
+3. **Image Caption Generator Code**  
+   - Source: [GitHub Repository](https://github.com/Sajid030/image-caption-generator)  
+   - Licensed under **MIT License** ([View License](https://github.com/Sajid030/image-caption-generator/blob/main/LICENSE))  
+
+#### ⚠ **Legal Disclaimer**
+- This software is provided **without warranty of any kind**, including but not limited to fitness for a particular purpose. The authors **shall not be liable** for any damage or legal issues arising from its use.
+- If this software is used for **critical applications** (e.g., medical, financial, or safety-critical systems), additional verification and compliance measures **must be performed by the user.**
+- **Users must verify the licenses** of all third-party datasets and external source code before using them in commercial or derivative works.
+
+By using this software, you **agree to accept all responsibility for legal compliance and any associated risks.**
+
