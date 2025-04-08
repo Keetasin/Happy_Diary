@@ -7,3 +7,7 @@ tensorflow
 numpy
 pickle
 wtforms
+ollama
+pyttsx3
+deep_translator
+
