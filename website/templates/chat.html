@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% block title %} Chatbot {% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    #chat-container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: rgba(255, 255, 255, 0.6);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(8px);
+        text-align: center;
+    }
+
+    .title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #0056b3;
+        margin-bottom: 20px;
+    }
+
+    #chat-history {
+        flex-grow: 1;
+        overflow-y: auto;
+        max-height: 400px;
+        margin-bottom: 20px;
+        padding-right: 10px;
+        padding-left: 10px;
+        border: 2px solid #007bff; 
+        background-color: white; 
+        border-radius: 10px; 
+    }
+
+    .message {
+        max-width: 75%;
+        margin: 10px;
+        padding: 10px 15px;
+        border-radius: 20px;
+        font-size: 16px;
+        word-wrap: break-word;
+        line-height: 1.4;
+        position: relative;
+    }
+
+    .user-message {
+        background-color: #c8e6c9;
+        margin-left: auto;
+        border-radius: 20px 20px 0 20px;
+        text-align: left;
+    }
+
+    .llama-message {
+        background-color: #bbdefb;
+        margin-right: auto;
+        border-radius: 20px 20px 20px 0;
+        text-align: left;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 16px;
+        margin-top: 10px;
+        resize: none;
+        border: 2px solid #007bff;
+    }
+
+    button {
+        background: linear-gradient(45deg, #007bff, #00c6ff);
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    button:hover {
+        background: linear-gradient(45deg, #0056b3, #0094ff);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    #response {
+        margin-top: 20px;
+        font-weight: bold;
+        color: #007bff;
+    }
+    
+    .timestamp {
+        font-size: 10px;
+        color: #999;
+        position: absolute;
+        bottom: 1px;
+        right: 12px;
+    }
+
+    .date-separator {
+        text-align: center;
+        margin: 10px 0;
+        font-weight: bold;
+        color: #888;
+        font-size: 14px;
+        padding: 5px;
+        background-color: #f1f1f1;
+        border-radius: 10px;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .date-text {
+        font-size: 18px;
+        color: #007bff;
+        font-weight: 600;
+    }
+    
+</style>
+
+<div id="chat-container">
+    <h1 class="title"> Chatbot </h1>
+    <div id="chat-history">
+        {% for day in chat_data %}
+            <div class="date-separator">
+                <span class="date-text">{{ day.date }}</span>
+            </div>
+            {% for chat in day.messages %}
+                <div class="message {{ 'user-message' if chat.role == 'user' else 'llama-message' }}">
+                    {{ chat.message }}
+                    <span class="timestamp">{{ chat.timestamp.strftime('%H:%M') }}</span>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    
+    <textarea id="question" placeholder="Ask me anything..." rows="3"></textarea>
+    <button onclick="askLlama()">Send</button>
+    <p id="response"></p>
+</div>
+
+
+<script>
+    async function askLlama() {
+        const question = document.getElementById("question").value;
+        if (!question) {
+            alert("Please enter a question.");
+            return;
+        }
+
+        // Clear the input field immediately when the button is clicked
+        document.getElementById("question").value = "";
+
+        // Show thinking message
+        document.getElementById("response").innerText = "Thinking...";
+
+        // Append the user message to chat history
+        appendMessage(question, 'user-message');
+
+        try {
+            const response = await fetch("/ask-llama", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ question: question })
+            });
+
+            const data = await response.json();
+            const botResponse = data.response || "Error getting response.";
+
+            // Append the bot's response to chat history
+            appendMessage(botResponse, 'llama-message');
+
+            // Clear "Thinking..." message after receiving response
+            document.getElementById("response").innerText = "";
+
+            // Scroll to the bottom of the chat history
+            scrollToBottom();
+        } catch (error) {
+            // Show error message if request fails
+            document.getElementById("response").innerText = "Error: " + error.message;
+        }
+    }
+
+    function scrollToBottom() {
+        const chatHistory = document.getElementById("chat-history");
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+
+
+    let isSpeaking = false; // ใช้ตัวแปรเช็คว่าเสียงกำลังเล่นอยู่หรือไม่
+
+    function appendMessage(message, messageClass) {
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("message", messageClass);
+    
+        const messageText = document.createElement("span");
+        messageText.innerText = message;
+    
+        messageElement.appendChild(messageText);
+    
+        // ถ้าเป็นข้อความจาก ollama จะเพิ่มปุ่ม Text-to-Speech
+        if (messageClass === 'llama-message') {
+            const ttsButton = document.createElement("button");
+            ttsButton.innerText = "🔊";
+            ttsButton.style.marginLeft = "10px";
+            ttsButton.style.border = "none";
+            ttsButton.style.background = "transparent";
+            ttsButton.style.cursor = "pointer";
+            ttsButton.style.fontSize = "20px";
+            ttsButton.style.padding = "0";  // ลด padding
+            ttsButton.style.height = "auto";  // ทำให้ขนาดปุ่มเล็กลง
+            ttsButton.style.width = "auto";  // ทำให้ขนาดปุ่มเล็กลง
+            ttsButton.style.lineHeight = "1";  // ปรับระยะห่างของไอคอน
+            ttsButton.style.textAlign = "center";  // จัดตำแหน่งให้ตรงกลาง
+            ttsButton.style.display = "inline-block";  // ให้ปุ่มแสดงเป็น inline-block
+    
+            ttsButton.onclick = () => {
+                if (isSpeaking) {
+                    // ถ้าเสียงกำลังเล่นอยู่ให้หยุดเสียง
+                    speechSynthesis.cancel();
+                    isSpeaking = false; // เปลี่ยนสถานะเป็นเสียงหยุด
+                } else {
+                    // ถ้าเสียงไม่ได้เล่นอยู่ให้เริ่มเล่นเสียง
+                    const speech = new SpeechSynthesisUtterance(message);
+                    speech.lang = "th-TH";  // เปลี่ยนเป็น "en-US" ถ้าต้องการภาษาอังกฤษ
+                    speechSynthesis.speak(speech);
+                    isSpeaking = true; // เปลี่ยนสถานะเป็นเสียงกำลังเล่น
+                }
+            };
+    
+            messageElement.appendChild(ttsButton);
+        }
+    
+        document.getElementById("chat-history").appendChild(messageElement);
+        scrollToBottom();
+    }
+
+    
+    
+
+</script>
+
+
+{% endblock %}
