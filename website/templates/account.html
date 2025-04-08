@@ -14,14 +14,21 @@ Account
     }
     
     #container {
-        max-width: 700px;
-        margin: 50px auto;
         background: rgba(255, 255, 255, 0.7);
         padding: 30px;
         border-radius: 15px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         backdrop-filter: blur(10px);
         text-align: center;
+        width: 94vw; /* หรือค่าที่คุณต้องการ */
+        height: 89vh;
+        margin: 100px 50px  100px 50px ; /* ไม่ให้มี margin */
+        position: absolute; /* ใช้ absolute positioning */
+        top: 0;
+        left: 0; /* ชิดขอบซ้ายสุด */
+        box-sizing: border-box; /* ไม่ให้ padding เพิ่มขนาดของกล่อง */
+
+        
     }
 
     .profile-card {
@@ -189,30 +196,78 @@ Account
         text-align: center;
     }
 
+    .main-content {
+        display: flex;
+        justify-content: space-between;
+        gap: 30px; /* ลดช่องว่างระหว่างสองคอลัมน์ */
+    }
     
+    .chart-container {
+        flex: 3; /* ลดความกว้างของกราฟลง */
+        max-height: 520px;
+    }
+    
+    .diary-entries {
+        flex: 2; /* เพิ่มพื้นที่สำหรับ diary entries */
+
+    }
+
+    .diary-entries-all {
+        max-height: 500px; /* กำหนดความสูงสูงสุด */
+        overflow-y: auto; /* ทำให้สามารถเลื่อนขึ้น-ลงได้ */
+        padding-right: 10px; /* ระยะห่างขวาเล็กน้อยจาก scroll bar */
+    }
+
+    .extra-container {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+    }
+    
+    .box1 {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        width: 500px;
+        height: 280px;
+    }
+    
+    .box2 {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        width: 500px;
+        height: 280px;
+    }
+    
+    
+    #depressionPieChart {
+        width: 300px;
+        height: 280px;
+        margin: 0 auto ;
+        margin-top: -50px; 
+        background: transparent; 
+    }
+
+    #depressionChart {
+        width: 900px;
+        height: 400px;
+        margin: 0 auto;
+    }
+
     </style>
 
-    <div id="container">
-
-    <div class="profile-card">
-        <h2>👤 Account</h2>
-        <p class="user-info">📧 Email: {{ email }}</p>
-        <p class="user-info">📝 Name: {{ first_name }}</p>
-    </div>    
     
-
-    <div class="chart-container">
-        <h2>Depression Level Trend</h2>
-        <canvas id="depressionChart"></canvas>
-    </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let diaryEntries = {{ diary_entries_serializable | tojson }};
             diaryEntries.reverse(); 
-    
+            
             const levelMapping = {
                 "minimum": 1,
                 "mild": 2,
@@ -230,7 +285,7 @@ Account
             const labels = diaryEntries.map(entry => entry.date);
             const data = diaryEntries.map(entry => levelMapping[entry.level] || 0);
             const pointColors = diaryEntries.map(entry => colorMapping[entry.level] || "#6c757d"); 
-    
+            
             const ctx = document.getElementById("depressionChart").getContext("2d");
             new Chart(ctx, {
                 type: "line",
@@ -251,6 +306,7 @@ Account
                     }]
                 },
                 options: {
+                    responsive: false,
                     plugins: {
                         legend: {
                             display: false 
@@ -290,62 +346,160 @@ Account
                 }
             });
         });
-    </script>
+</script>
 
+
+<div id="container">
 
     
+    <!-- Container สำหรับแบ่งซ้าย-ขวา -->
+    <div class="main-content">
+        <!-- Depression Level Trend (อยู่ทางซ้าย) -->
+        <div class="chart-container">
+            <h2>Depression Level Trend</h2>
+            <canvas id="depressionChart"></canvas>
+            
+            <!-- สอง div ที่อยู่ใต้ chart-container -->
+            <div class="extra-container">
+                <!-- Add this inside the <body> tag where you want to display the pie chart -->
+                <div class="box1">
+                    <h2>Depression Level Distribution</h2>
+                    <canvas id="depressionPieChart"></canvas>
+                </div>
 
-    <h2>Diary Entries</h2>
+                <!-- Chart.js -->
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    const levelData = {{ level_data | tojson }};
 
-    {% if diary_entries %}
-        {% for entry in diary_entries %}
-            <div class="entry-card">
-                <div class="entry-title">{{ entry.title }}</div>
-                <div class="entry-date">📅 {{ entry.date.strftime('%B %d, %Y') }}</div>
+                    const ctx = document.getElementById('depressionPieChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Minimum', 'Mild', 'Moderate', 'Severe'],
+                            datasets: [{
+                                label: 'Depression Level Distribution',
+                                data: [
+                                    levelData.minimum, 
+                                    levelData.mild, 
+                                    levelData.moderate, 
+                                    levelData.severe
+                                ],
+                                backgroundColor: [
+                                    '#4CAF50',   // Minimum
+                                    '#FFEB3B',   // Mild
+                                    '#FF9800',   // Moderate
+                                    '#F44336'    // Severe
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: false,
+                            plugins: {
+                                legend: {
+                                    position: 'right',
+                                }
+                            },
+                        }
+                    });
+                </script>
                 
-                {% if entry.level == "minimum" %}
-                <small class="depression-level level-minimum">
-                    😊 Depression level: <strong><a href="/tips">Minimum</a></strong>
-                </small>
-                {% elif entry.level == "mild" %}
-                <small class="depression-level level-mild">
-                    😐 Depression level: <strong><a href="/stress-relief">Mild</a></strong>
-                </small>
-                {% elif entry.level == "moderate" %}
-                <small class="depression-level level-moderate">
-                    😕 Depression level: <strong><a href="/self-help">Moderate</a></strong>
-                </small>
-                {% elif entry.level == "severe" %}
-                <small class="depression-level level-severe">
-                    😢 Depression level: <strong><a href="/therapy">Severe</a></strong>
-                </small>
-                {% else %}
-                <small class="depression-level level-unknown">
-                    ❓ Depression level: <strong>Not Available</strong>
-                </small>
-                {% endif %}                
-
-                <div class="entry-content">{{ entry.content }}</div>
-                {% if entry.image_filename %}
-                    <div class="image-container">
-                        <img src="{{ url_for('static', filename='uploads/' + entry.image_filename) }}" alt="Uploaded Image" style="max-width: 100%; height: auto;">
-                    </div>
-                    {% if entry.image_caption %}
-                        <p class="caption-text"><strong>🖼 Caption:</strong> {{ entry.image_caption }}</p>
+                
+                <div class="box2">
+                    {% if diary_entries|length > 0 %}
+                    {% set latest_entry = diary_entries[0] %}
+                    <div class="depression-level {{ 'level-' + latest_entry.level }}">
+                            <h3>Latest Depression Level</h3>
+                            <strong>{{ latest_entry.level|capitalize }}</strong><br>
+                            <span class="date">
+                                {{ latest_entry.date.strftime('%d %B %Y') }}
+                            </span><br>
+                            <span class="emoji" style="font-size: 6em;">
+                                {% if latest_entry.level == 'minimum' %}
+                                    😊
+                                {% elif latest_entry.level == 'mild' %}
+                                    😐 
+                                {% elif latest_entry.level == 'moderate' %}
+                                    😕
+                                {% elif latest_entry.level == 'severe' %}
+                                    😢
+                                {% endif %}
+                            </span>
+                        </div>
+                    {% else %}
+                        <p>No diary entries available.</p>
                     {% endif %}
+                         
+                </div> 
+            </div>        
+        </div>
+
+        <!-- Diary Entries (อยู่ทางขวา) -->
+        <div class="diary-entries">
+            <div class="profile-card">
+                <h2>👤 Account</h2>
+                <p class="user-info">📧 Email: {{ email }}</p>
+                <p class="user-info">📝 Name: {{ first_name }}</p>
+            </div> 
+            
+            <h2>Diary Entries</h2>
+
+            <div class="diary-entries-all">
+                {% if diary_entries %}
+                    {% for entry in diary_entries %}
+                        <div class="entry-card">
+                            <div class="entry-title">{{ entry.title }}</div>
+                            <div class="entry-date">📅 {{ entry.date.strftime('%B %d, %Y') }}</div>
+                            
+                            {% if entry.level == "minimum" %}
+                            <small class="depression-level level-minimum">
+                                😊 Depression level: <strong><a href="/tips">Minimum</a></strong>
+                            </small>
+                            {% elif entry.level == "mild" %}
+                            <small class="depression-level level-mild">
+                                😐 Depression level: <strong><a href="/stress-relief">Mild</a></strong>
+                            </small>
+                            {% elif entry.level == "moderate" %}
+                            <small class="depression-level level-moderate">
+                                😕 Depression level: <strong><a href="/self-help">Moderate</a></strong>
+                            </small>
+                            {% elif entry.level == "severe" %}
+                            <small class="depression-level level-severe">
+                                😢 Depression level: <strong><a href="/therapy">Severe</a></strong>
+                            </small>
+                            {% else %}
+                            <small class="depression-level level-unknown">
+                                ❓ Depression level: <strong>Not Available</strong>
+                            </small>
+                            {% endif %}                
+
+                            <div class="entry-content">{{ entry.content }}</div>
+                            {% if entry.image_filename %}
+                                <div class="image-container">
+                                    <img src="{{ url_for('static', filename='uploads/' + entry.image_filename) }}" alt="Uploaded Image" style="max-width: 100%; height: auto;">
+                                </div>
+                                {% if entry.image_caption %}
+                                    <p class="caption-text"><strong>🖼 Caption:</strong> {{ entry.image_caption }}</p>
+                                {% endif %}
+                            {% endif %}
+                            
+                            <form action="{{ url_for('views.delete_diary', diary_id=entry.id) }}" method="POST">
+                                <button type="submit" class="delete-btn">🗑️ Delete</button>
+                            </form>           
+                        
+
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No diary entries yet.</p>
                 {% endif %}
 
-
-                <form action="{{ url_for('views.delete_diary', diary_id=entry.id) }}" method="POST">
-                    <button type="submit" class="delete-btn">🗑️ Delete</button>
-                </form>         
-
             </div>
-        {% endfor %}
-    {% else %}
-        <p>No diary entries yet.</p>
-    {% endif %}
 
     <a href="/logout" class="logout-btn">🚪 Logout</a>
+
 </div>
+
+
 {% endblock %}
