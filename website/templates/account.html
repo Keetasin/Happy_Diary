@@ -282,7 +282,7 @@ Account
                 "severe": "#dc3545"    
             };
     
-            const labels = diaryEntries.map(entry => entry.date);
+            const labels = diaryEntries.map(entry => entry.date.split(" ")[0]);
             const data = diaryEntries.map(entry => levelMapping[entry.level] || 0);
             const pointColors = diaryEntries.map(entry => colorMapping[entry.level] || "#6c757d"); 
             

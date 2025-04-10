@@ -53,10 +53,6 @@ def account():
     email = user.email
     first_name = user.first_name
     diary_entries = Diary.query.filter_by(user_id=user.id).order_by(Diary.date.desc()).all()
-    # print ทั้งหมดเป็น dict
-    for entry in diary_entries:
-        print(entry.to_dict())
-
     current_date = datetime.now(pytz.timezone('Asia/Bangkok')).date()
     diary_entries_serializable = [entry.to_dict() for entry in diary_entries]
 
@@ -87,7 +83,7 @@ def delete_diary(diary_id):
     diary = Diary.query.get_or_404(diary_id)
 
     if diary.user_id != current_user.id:
-        flash('You do not have permission to delete this entry.', category='error')
+        # flash('You do not have permission to delete this entry.', category='error')
         return redirect(url_for('views.account'))
     
     if diary.image_filename:
@@ -97,7 +93,7 @@ def delete_diary(diary_id):
 
     db.session.delete(diary)
     db.session.commit()
-    flash('Diary entry deleted successfully!', category='success')
+    # flash('Diary entry deleted successfully!', category='success')
 
     return redirect(url_for('views.account'))
 
@@ -136,7 +132,6 @@ def detect_language(text):
         # ตรวจสอบภาษา
         return detect(text)
     except Exception as e:
-        print(f"Error in language detection: {e}")
         return None
 
 def translate_to_english(text):
@@ -145,7 +140,6 @@ def translate_to_english(text):
         translated = GoogleTranslator(source='auto', target='en').translate(text)
         return translated
     except Exception as e:
-        print(f"Error in translation: {e}")
         return text
 
     
@@ -160,7 +154,7 @@ def diary():
     if form.validate_on_submit():
         title = form.title.data
         content = form.content.data
-        date = datetime.now(pytz.timezone('Asia/Bangkok')).date()
+        date = datetime.now(pytz.timezone('Asia/Bangkok'))
 
         if form.image.data:
             image_file = form.image.data
