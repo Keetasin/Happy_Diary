@@ -10,4 +10,6 @@ wtforms
 ollama
 pyttsx3
 deep_translator
+langdetect
+
 

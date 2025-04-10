@@ -4,6 +4,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from flask_login import login_required, current_user
 from deep_translator import GoogleTranslator
 from .models import Diary, ChatHistory
+from langdetect import detect
 from datetime import datetime
 from flask import current_app
 from .forms import DiaryForm
@@ -52,6 +53,10 @@ def account():
     email = user.email
     first_name = user.first_name
     diary_entries = Diary.query.filter_by(user_id=user.id).order_by(Diary.date.desc()).all()
+    # print ทั้งหมดเป็น dict
+    for entry in diary_entries:
+        print(entry.to_dict())
+
     current_date = datetime.now(pytz.timezone('Asia/Bangkok')).date()
     diary_entries_serializable = [entry.to_dict() for entry in diary_entries]
 
