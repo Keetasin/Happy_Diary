@@ -64,7 +64,6 @@ Ensure that you have Python installed on your system before proceeding.
    pip install -r requirements.txt
    ```
 4. Install and set up Meta's LLaMA 3 locally using [Ollama](https://ollama.com/):
-Ollama is a tool for running LLMs locally, including Meta's LLaMA 3.
  - Download and install Ollama: For Windows/macOS/Linux: https://ollama.com/download
  - Pull the LLaMA 3 model: 
     ```bash
@@ -88,10 +87,3 @@ Ollama is a tool for running LLMs locally, including Meta's LLaMA 3.
    ```
    http://127.0.0.1:5000
    ```
-
----
-
-### 🎥 Video Tutorial   
-
-- **YouTube Tutorial**: [YouTube Video](https://youtu.be/HWr2KuyTWa0)  
-
